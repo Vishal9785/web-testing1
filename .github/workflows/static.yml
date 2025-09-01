@@ -31,7 +31,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - run: docker build . -t vishal9785/web-app
+      - run: docker build . -t vishalkumar02976/web-app
       - run: echo "${{secrets.DOCKERHUB_PASSWORD}}" | docker login -u ${{secrets.DOCKERHUB_USERNAME}} --password-stdin
       - run: docker push vishalkumar02976/web-app:latest
 
