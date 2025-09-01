@@ -31,9 +31,20 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - run: docker build . -t vishalkumar02976/my-site
-      - run: echo "${{secrets.DOCKERHUB_PASSWORD}}" | docker login -u ${{secrets.DOCKERHUB_USERNAME}} --password-stdin
-      - run: docker push vishalkumar02976/my-site:latest
+      
+      - name: Docker login
+        run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+
+      - name: Build Docker image
+
+        run: |
+
+          IMAGE_NAME="vishalkumar02976/my-site"
+          VERSION_TAG="v${{ github.run_number }}"
+          echo "Building and tagging $IMAGE_NAME:latest and $IMAGE_NAME:$VERSION_TAG"
+          docker build . -t $IMAGE_NAME:latest -t $IMAGE_NAME:$VERSION_TAG
+          docker push $IMAGE_NAME:latest
+          docker push $IMAGE_NAME:$VERSION_TAG
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
